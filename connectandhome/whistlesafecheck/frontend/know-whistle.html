@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Cases - WhistleSafe</title>
+    <!-- Link to your final CSS file -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font (Optional - if defined in style.css, maybe remove) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- NO <style> block here - styles should come from style.css -->
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo">
+            <i class="fas fa-whistle"></i>
+            <span>WhistleSafe</span>
+        </div>
+        <nav class="main-nav">
+            <a href="index.html">Home</a>
+            <a href="blow-whistle.html">Report</a>
+            <a href="know-whistle.html" class="active">Cases</a>
+            <!-- Add other nav links as needed -->
+        </nav>
+        <button class="mobile-menu-btn" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <main class="cases-container">
+
+        <div class="filter-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search reports by keyword...">
+            </div>
+            <div class="filters">
+                 <div class="filter-group">
+                    <label for="categoryFilter"><i class="fas fa-tag"></i> Category</label>
+                    <select id="categoryFilter">
+                        <option value="">All Categories</option>
+                         <!-- Options can be populated dynamically or listed statically -->
+                        <option value="corruption">Corruption</option>
+                        <option value="fraud">Fraud</option>
+                        <option value="harassment">Harassment</option>
+                        <option value="discrimination">Discrimination</option>
+                        <option value="safety">Safety Violation</option>
+                        <option value="environmental">Environmental Concern</option>
+                         <option value="other">Other</option>
+                    </select>
+                </div>
+                <!-- REMOVED Status Filter Div -->
+                <div class="filter-group">
+                    <label for="fromDate"><i class="fas fa-calendar-alt"></i> Date Range</label>
+                    <div class="date-range">
+                        <input type="date" id="fromDate" title="From Date">
+                        <span>to</span>
+                        <input type="date" id="toDate" title="To Date">
+                    </div>
+                </div>
+                <!-- Buttons removed from filter-group div for better alignment -->
+                <button id="applyFilters" class="btn primary">
+                    <i class="fas fa-filter"></i>
+                </button>
+                <button id="resetFilters" class="btn secondary">
+                    <i class="fas fa-redo"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="sort-options">
+             <div class="sort-group">
+                <label for="sortBy">Sort:</label>
+                <select id="sortBy">
+                    <option value="date-desc">Newest First</option>
+                    <option value="date-asc">Oldest First</option>
+                    <option value="score-desc">Highest Credibility</option>
+                    <option value="score-asc">Lowest Credibility</option>
+                </select>
+            </div>
+             <div class="view-toggle">
+                <button class="view-btn active" data-view="list" aria-label="List view"><i class="fas fa-list"></i></button>
+                <button class="view-btn" data-view="grid" aria-label="Grid view"><i class="fas fa-th-large"></i></button>
+            </div>
+        </div>
+
+        <!-- Report List Container -->
+        <div id="reportList" class="report-list list-view">
+             <div class="loading-spinner"><div class="spinner"></div><p>Loading reports...</p></div>
+             <!-- Reports loaded here -->
+        </div>
+
+        <!-- Pagination Placeholder -->
+        <div class="pagination">
+             <button class="pagination-btn" disabled><i class="fas fa-chevron-left"></i> Prev</button>
+             <div class="page-numbers"><button class="page-btn active">1</button></div>
+             <button class="pagination-btn">Next <i class="fas fa-chevron-right"></i></button>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>WhistleSafe</h4>
+                <p>Promoting transparency and accountability through secure whistleblowing.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="blow-whistle.html"><i class="fas fa-bullhorn"></i> Make a Report</a></li>
+                    <li><a href="know-whistle.html"><i class="fas fa-list-alt"></i> View Cases</a></li>
+                    <li><a href="#"><i class="fas fa-question-circle"></i> FAQ</a></li> <!-- Placeholder -->
+                </ul>
+            </div>
+
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 WhistleSafe. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Global Variables ---
+        let allReports = [];
+        const API_BASE_URL = "http://127.0.0.1:8000";
+        const reportListContainer = document.getElementById("reportList");
+        const categoryFilterEl = document.getElementById("categoryFilter");
+        // const statusFilterEl = document.getElementById("statusFilter"); // REMOVED
+        const fromDateEl = document.getElementById("fromDate");
+        const toDateEl = document.getElementById("toDate");
+        const searchInputEl = document.getElementById("searchInput");
+        const sortByEl = document.getElementById("sortBy");
+
+        // --- Helper Functions ---
+        function escapeHtml(str) {
+          if (str === null || str === undefined) return '';
+          return String(str).replace(/[&<>"']/g, match => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+          }[match]));
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            try {
+                const ops = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+                return new Date(dateString).toLocaleDateString(undefined, ops);
+            } catch (e) { console.warn(`Date format issue: ${dateString}`); return dateString; }
+        }
+
+        function truncateText(text, maxLength) { if (!text || text.length <= maxLength) return text; return text.substring(0, maxLength) + '...'; }
+        function capitalizeFirstLetter(string) { if (!string) return ''; return string.charAt(0).toUpperCase() + string.slice(1); }
+        function getStatusClass(status) { /* ... Same as before ... */ status = status ? status.toLowerCase() : 'new'; switch (status) { case 'new': return 'status-new'; case 'investigating': return 'status-investigating'; case 'resolved': return 'status-resolved'; case 'rejected': return 'status-rejected'; default: return 'status-new'; } }
+        function getScoreClass(score) { /* ... Same as before ... */ if (score === null || score === undefined || typeof score !== 'number') return 'score-medium'; if (score >= 0.75) return 'score-high'; if (score >= 0.4) return 'score-medium'; return 'score-low'; }
+
+        // --- API Fetching ---
+        async function fetchReports() {
+            console.log("%cFetching reports...", "color: blue; font-weight: bold;");
+            reportListContainer.innerHTML = `<div class="loading-spinner"><div class="spinner"></div><p>Loading reports...</p></div>`;
+            try {
+                const response = await fetch(`${API_BASE_URL}/reports`);
+                if (!response.ok) { const errTxt = await response.text(); throw new Error(`HTTP ${response.status}: ${errTxt}`); }
+                const data = await response.json();
+                console.log(`%cReceived ${data.length} reports.`, "color: green;");
+                allReports = data;
+                if (allReports.length > 0) { console.log("First report structure:", JSON.stringify(allReports[0], null, 2)); }
+                else { console.log("Received empty report list."); }
+                applyFilters(); // Initial display
+            } catch (error) {
+                console.error("FETCH ERROR:", error);
+                reportListContainer.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-triangle"></i><p>Failed to load reports: ${error.message}</p><button onclick="fetchReports()" class="btn secondary"><i class="fas fa-sync-alt"></i> Retry</button></div>`;
+            }
+        }
+
+        // --- Filtering and Sorting (DEBUGGED) ---
+        function applyFilters() {
+            const category = categoryFilterEl.value;
+            // const status = statusFilterEl.value; // REMOVED
+            const from = fromDateEl.value;
+            const to = toDateEl.value;
+            const term = searchInputEl.value.toLowerCase().trim();
+            const sort = sortByEl.value;
+
+            console.groupCollapsed("--- Applying Filters ---");
+            console.log("Category:", category || "All");
+            // console.log("Status:", status || "All"); // REMOVED
+            console.log("From Date:", from || "None");
+            console.log("To Date:", to || "None");
+            console.log("Search Term:", term || "None");
+            console.log("Sort By:", sort);
+            console.log("Total reports available:", allReports.length);
+
+            let filtered = allReports.filter(report => {
+                if (!report) return false;
+
+                const categoryMatch = !category || (report.category && report.category === category);
+                // const statusMatch = true; // REMOVED - No longer needed
+                const searchMatch = !term || (report.heading && report.heading.toLowerCase().includes(term)) || (report.body && report.body.toLowerCase().includes(term)) || (report.location && report.location.toLowerCase().includes(term));
+
+                let dateMatch = true;
+                if (from || to) {
+                    if (!report.date) { dateMatch = false; }
+                    else {
+                        try {
+                            const reportDate = new Date(report.date.split(' ')[0] + 'T00:00:00Z');
+                            if (isNaN(reportDate.getTime())) { dateMatch = false; console.warn(`Invalid date: ${report.date}`); }
+                            else {
+                                const fromDate = from ? new Date(from + 'T00:00:00Z') : null;
+                                const toDate = to ? new Date(to + 'T23:59:59Z') : null;
+                                if (fromDate && !isNaN(fromDate.getTime()) && reportDate < fromDate) dateMatch = false;
+                                if (toDate && !isNaN(toDate.getTime()) && reportDate > toDate) dateMatch = false;
+                            }
+                        } catch (e) { dateMatch = false; console.error("Date parsing error:", e); }
+                    }
+                }
+                // REMOVED statusMatch from return
+                return categoryMatch && searchMatch && dateMatch;
+            });
+
+            console.log("Reports after filtering:", filtered.length);
+
+            // --- Sorting ---
+             filtered.sort((a, b) => {
+                 const dateA = a.date ? new Date(a.date) : new Date(0); const dateB = b.date ? new Date(b.date) : new Date(0);
+                 const validA = !isNaN(dateA.getTime()); const validB = !isNaN(dateB.getTime());
+                 const scoreA = (typeof a.score === 'number') ? a.score : -1; const scoreB = (typeof b.score === 'number') ? b.score : -1;
+                 switch(sort) {
+                     case 'date-asc': if(!validA && !validB) return 0; if(!validA) return 1; if(!validB) return -1; return dateA.getTime() - dateB.getTime();
+                     case 'date-desc': if(!validA && !validB) return 0; if(!validA) return 1; if(!validB) return -1; return dateB.getTime() - dateA.getTime();
+                     case 'score-asc': return scoreA - scoreB;
+                     case 'score-desc': return scoreB - scoreA;
+                     default: if(!validA && !validB) return 0; if(!validA) return 1; if(!validB) return -1; return dateB.getTime() - dateA.getTime();
+                 }
+             });
+             console.log("Sorting complete.");
+             console.groupEnd();
+
+            displayReports(filtered);
+        }
+
+        // --- Display Logic ---
+        function displayReports(reports) {
+            if (!reports) { console.error("displayReports called with null/undefined reports."); reportListContainer.innerHTML = `<div class="error-message">Error displaying reports.</div>`; return; }
+            if (reports.length === 0) { reportListContainer.innerHTML = `<div class="no-results"><h3>No reports match criteria</h3></div>`; return; }
+            reportListContainer.innerHTML = '';
+
+            reports.forEach(report => {
+                const card = document.createElement("div");
+                card.className = "report-card";
+                card.setAttribute('data-hashid', report.hash_id || '');
+
+                const statusClass = getStatusClass(report.status); // Uses default if status missing
+                const scoreClass = getScoreClass(report.score);
+                const credibilityScore = report.score !== undefined && typeof report.score === 'number' ? Math.round(report.score * 100) : 'N/A';
+
+                const fileLinkHtml = report.file ? `<div class="report-file"><a href="${API_BASE_URL}/download/${encodeURIComponent(report.file)}" target="_blank" title="Download evidence" class="btn secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;"><i class="fas fa-paperclip"></i> Evidence</a></div>` : "";
+
+                card.innerHTML = `
+                    <div class="report-header">
+                        <span class="report-status ${statusClass}" title="Report Status"><i class="fas fa-circle"></i> ${capitalizeFirstLetter(report.status || 'New')}</span>
+                        <span class="report-date" title="Submitted"><i class="far fa-calendar-alt"></i> ${formatDate(report.date)}</span>
+                    </div>
+                    <h3 title="${escapeHtml(report.heading || '')}">${escapeHtml(report.heading || 'Untitled')}</h3>
+                    <div class="report-meta">
+                        <span class="report-category" title="Category"><i class="fas fa-tag"></i> ${escapeHtml(report.category || 'Uncat.')}</span>
+                        <span class="report-location" title="Location"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(report.location || 'N/A')}</span>
+                    </div>
+                    <div class="report-body">${truncateText(escapeHtml(report.body || 'No details.'), 150)}</div>
+                    <div class="report-footer">
+                        <div class="report-score ${scoreClass}" title="Credibility Score"><i class="fas fa-check-circle"></i> Credibility: ${credibilityScore}%</div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            ${fileLinkHtml}
+                            <button class="btn view-details" title="View full details"><i class="fas fa-eye"></i> Details</button>
+                        </div>
+                    </div>`;
+                reportListContainer.appendChild(card);
+            });
+        }
+
+        // --- Event Listeners Setup ---
+        function setupEventListeners() {
+            // Mobile menu
+            document.querySelector('.mobile-menu-btn')?.addEventListener('click', () => document.querySelector('.main-nav')?.classList.toggle('show'));
+            // View toggle
+            document.querySelectorAll('.view-btn').forEach(btn => btn.addEventListener('click', function() { document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active')); this.classList.add('active'); reportListContainer.className = `report-list ${this.dataset.view}-view`; }));
+            // Filter Controls
+            document.getElementById('applyFilters')?.addEventListener('click', applyFilters);
+            document.getElementById('resetFilters')?.addEventListener('click', () => {
+                 categoryFilterEl.value = '';
+                 // statusFilterEl.value = ''; // REMOVED
+                 fromDateEl.value = '';
+                 toDateEl.value = '';
+                 searchInputEl.value = '';
+                 sortByEl.value = 'date-desc';
+                 applyFilters();
+             });
+            sortByEl?.addEventListener('change', applyFilters);
+            // Live filtering
+            categoryFilterEl?.addEventListener('change', applyFilters);
+            // statusFilterEl?.addEventListener('change', applyFilters); // REMOVED Listener
+            fromDateEl?.addEventListener('change', applyFilters);
+            toDateEl?.addEventListener('change', applyFilters);
+            // Debounced search
+            let searchTimeout; searchInputEl?.addEventListener('input', () => { clearTimeout(searchTimeout); searchTimeout = setTimeout(applyFilters, 350); });
+
+            // Event Listener for "View Details" (Delegated)
+            reportListContainer.addEventListener('click', function(event) {
+                const viewButton = event.target.closest('.view-details');
+                if (viewButton) {
+                    event.preventDefault();
+                    const reportCard = viewButton.closest('.report-card');
+                    const hashId = reportCard?.getAttribute('data-hashid');
+                    if (hashId) {
+                        const fullReport = allReports.find(r => r.hash_id === hashId);
+                        if (fullReport) {
+                             alert(`--- Full Report Details ---\nHash: ${fullReport.hash_id}\nCategory: ${fullReport.category || 'N/A'}\nDate: ${formatDate(fullReport.date)}\nLocation: ${fullReport.location || 'N/A'}\nScore: ${fullReport.score !== undefined ? Math.round(fullReport.score * 100) : 'N/A'}%\nHeading: ${fullReport.heading || 'N/A'}\n\nBody:\n${fullReport.body || 'N/A'}\n\n${fullReport.file ? `File: ${fullReport.file}` : 'No file attached.'}`);
+                             console.log("Full Report Details:", fullReport);
+                        } else { console.error(`Details Error: Report ${hashId} not found.`); alert("Error: Could not retrieve details."); }
+                    } else { console.error("Details Error: Missing hash ID."); alert("Error retrieving details."); }
+                }
+            });
+        }
+
+        // --- Initial Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            setupEventListeners();
+            fetchReports();
+        });
+    </script>
+</body>
+</html>

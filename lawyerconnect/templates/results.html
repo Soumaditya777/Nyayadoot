@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<h2>Legal Professionals Available</h2>
+
+<a href="{{ url_for('index') }}" class="back-link">&laquo; New Search</a>
+
+{% if professionals %}
+    <div class="results-list">
+        {% for prof in professionals %}
+        <div class="professional-card">
+            <div class="card-header">
+                 <img src="{{ url_for('static', filename='images/default_avatar.png') if not prof.profile_picture_url or 'default' in prof.profile_picture_url else prof.profile_picture_url }}" alt="Profile picture for {{ prof.full_name }}" class="profile-pic">
+                 <h3>{{ prof.full_name }}</h3>
+                 {% if prof.pro_bono %}
+                 <span class="pro-bono-tag">Pro Bono Available</span>
+                 {% endif %}
+            </div>
+            <div class="card-body">
+                <p>
+                    <strong>
+                        {% if prof.is_student %}
+                            Law Student
+                        {% else %}
+                            {{ prof.years_of_practice if prof.years_of_practice is not none else 'N/A' }} years experience
+                        {% endif %}
+                    </strong>
+                </p>
+                <p><strong>Area(s):</strong> {{ prof.domains | join(', ') }}</p>
+                <p><strong>Languages:</strong> {{ prof.languages | join(', ') }}</p>
+                <p><strong>Location:</strong> {{ prof.location_city }}</p>
+                <p><strong>Availability:</strong> {{ prof.availability if prof.availability else 'Not specified' }}</p>
+                {% if prof.bio %}
+                <p><strong>Bio:</strong> {{ prof.bio[:100] }}{% if prof.bio|length > 100 %}...{% endif %}</p> {# Truncate long bios #}
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                 <a href="#" class="btn-request">Request Contact</a> {# Placeholder link #}
+                 <a href="{{ url_for('profile', professional_id=prof.id) }}" class="btn-profile">View Full Profile</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No professionals found matching your criteria. Try broadening your search.</p>
+{% endif %}
+
+<a href="{{ url_for('index') }}" class="back-link">&laquo; New Search</a>
+{% endblock %}

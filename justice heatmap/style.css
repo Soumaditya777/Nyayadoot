@@ -1,0 +1,161 @@
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f7fa;
+}
+
+header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+/* Legend Styles */
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+
+.low {
+    background-color: #e74c3c;
+}
+
+.medium {
+    background-color: #f39c12;
+}
+
+.high {
+    background-color: #2ecc71;
+}
+
+/* Heatmap Styles */
+.heatmap-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 3rem 0;
+}
+
+.region {
+    padding: 1.5rem;
+    border-radius: 8px;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.region:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.region h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.region p {
+    opacity: 0.9;
+}
+
+.north, .west {
+    background-color: #e74c3c; /* Red for low access */
+}
+
+.south, .central {
+    background-color: #f39c12; /* Orange for medium access */
+    color: #333;
+}
+
+.east {
+    background-color: #2ecc71; /* Green for high access */
+}
+
+/* Recommendations */
+.recommendations {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin: 3rem 0;
+}
+
+.recommendations h2 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.recommendations ul {
+    list-style-position: inside;
+    padding-left: 1rem;
+}
+
+.recommendations li {
+    margin-bottom: 0.5rem;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 2rem;
+    background-color: #2c3e50;
+    color: white;
+}
+
+.timestamp {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .heatmap-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .legend {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+}

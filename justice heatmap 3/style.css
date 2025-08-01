@@ -1,0 +1,98 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background: #f8f8fc;
+    color: #333;
+    text-align: center;
+  }
+  
+  header {
+    padding: 1.5rem 1rem 0.5rem;
+    background: #f4f1ff;
+    color: #6a1b9a;
+  }
+  
+  header h1 {
+    font-size: 1.8rem;
+    margin: 0;
+  }
+  
+  header p {
+    margin: 0.5rem 0 1rem;
+    font-weight: 400;
+    color: #555;
+  }
+  
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .color {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
+  
+  .color.low { background: #ff6b6b; }
+  .color.medium { background: #ffd166; }
+  .color.high { background: #06d6a0; }
+  
+  .map-wrapper {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  
+  .map-img {
+    width: 100%;
+    display: block;
+  }
+  
+  .marker {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid white;
+    opacity: 0.9;
+    cursor: pointer;
+  }
+  
+  .marker.low { background: #ff6b6b; }
+  .marker.medium { background: #ffd166; }
+  .marker.high { background: #06d6a0; }
+  
+  .recommendations {
+    margin: 2rem auto;
+    max-width: 700px;
+    text-align: left;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.08);
+  }
+  
+  .recommendations h2 {
+    color: #6a1b9a;
+    margin-bottom: 1rem;
+  }
+  
+  .recommendations ul {
+    padding-left: 1.2rem;
+    line-height: 1.8;
+  }
+  
+  footer {
+    margin: 2rem 0;
+    font-size: 0.9rem;
+    color: #999;
+  }
+  

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>India Justice Access Heatmap</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>Justice Compass - India Justice Access</h1>
+    <p>Explore areas with limited access to legal resources across India</p>
+  </header>
+
+  <div class="legend">
+    <div><span class="color low"></span>Low Access</div>
+    <div><span class="color medium"></span>Medium Access</div>
+    <div><span class="color high"></span>High Access</div>
+  </div>
+
+  <div class="map-wrapper">
+    <img src="india-map.png" alt="India Map" class="map-img" />
+    
+    <!-- MARKERS (top/left adjusted manually to align with states) -->
+    <div class="marker low" style="top: 10%; left: 43%;" title="Jammu & Kashmir"></div>
+    <div class="marker low" style="top: 15%; left: 40%;" title="Himachal Pradesh"></div>
+    <div class="marker medium" style="top: 35%; left: 52%;" title="Uttar Pradesh"></div>
+    <div class="marker high" style="top: 60%; left: 45%;" title="Maharashtra"></div>
+    <div class="marker medium" style="top: 67%; left: 52%;" title="Andhra Pradesh"></div>
+    <div class="marker high" style="top: 75%; left: 55%;" title="Tamil Nadu"></div>
+    <div class="marker low" style="top: 50%; left: 58%;" title="Chhattisgarh"></div>
+    <div class="marker medium" style="top: 45%; left: 64%;" title="West Bengal"></div>
+    <div class="marker low" style="top: 30%; left: 70%;" title="Assam"></div>
+  </div>
+
+  <section class="recommendations">
+    <h2>Recommendations</h2>
+    <ul>
+      <li>🔴 <strong>Low Access States</strong>: Deploy mobile legal clinics (J&K, HP, Assam)</li>
+      <li>🟡 <strong>Medium Access States</strong>: Launch rural awareness drives (UP, AP, WB)</li>
+      <li>🟢 <strong>High Access States</strong>: Strengthen digital legal aid (MH, TN)</li>
+      <li>🎯 Focus on increasing lawyer density in underserved regions.</li>
+    </ul>
+  </section>
+
+  <footer>
+    &copy; <span id="year"></span> Justice Compass
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

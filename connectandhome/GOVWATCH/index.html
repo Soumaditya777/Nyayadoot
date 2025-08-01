@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GovWatch AI</title>
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #8a2be2;
+            --primary-dark: #7a1cc1;
+            --high-risk: #e74c3c;
+            --medium-risk: #f39c12;
+            --low-risk: #2ecc71;
+            --text: #333;
+            --light-bg: #f8f9fa;
+            --card-bg: #fff;
+            --border: #dee2e6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        /* Main Content */
+        .app-section {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: var(--card-bg);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        /* Risk Cards */
+        .risk-card {
+            border-left: 4px solid var(--border);
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: var(--card-bg);
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .high-risk {
+            border-left-color: var(--high-risk);
+        }
+        
+        .medium-risk {
+            border-left-color: var(--medium-risk);
+        }
+        
+        .low-risk {
+            border-left-color: var(--low-risk);
+        }
+        
+        .risk-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .risk-badge {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .badge-high {
+            background-color: var(--high-risk);
+        }
+        
+        .badge-medium {
+            background-color: var(--medium-risk);
+        }
+        
+        .badge-low {
+            background-color: var(--low-risk);
+        }
+        
+        .risk-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Analysis Page */
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .risk-meter {
+            height: 20px;
+            background-color: #eee;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .meter-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .meter-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom-color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GovWatch AI</h1>
+            <p>Monitor and analyze public projects for potential corruption risks</p>
+        </header>
+
+        <main id="app-content">
+            <!-- Content will be dynamically loaded here -->
+        </main>
+    </div>
+
+    <script>
+        // App State
+        const state = {
+            currentView: 'dashboard',
+            projects: JSON.parse(localStorage.getItem('govwatch-projects')) || [],
+            currentProject: null
+        };
+
+        // DOM Elements
+        const appContent = document.getElementById('app-content');
+
+        // Initialize the app
+        function init() {
+            renderDashboard();
+            // Load sample data if empty
+            if (state.projects.length === 0) {
+                loadSampleData();
+            }
+        }
+
+        // Load sample projects
+        function loadSampleData() {
+            state.projects = [
+                {
+                    id: '1',
+                    name: 'Highway Construction Project',
+                    budget: 12500000,
+                    timeline: 24,
+                    details: 'Single bidder selected for major highway construction',
+                    date: new Date().toISOString(),
+                    riskScore: 85,
+                    riskLevel: 'high',
+                    riskFactors: [
+                        'Budget: 40% above regional average',
+                        'Single bidder selected',
+                        'Timeline extensions requested'
+                    ],
+                    recommendations: [
+                        'Open new bidding period',
+                        'Independent cost review',
+                        'Enhanced oversight'
+                    ]
+                },
+                {
+                    id: '2',
+                    name: 'Public School Renovation',
+                    budget: 2800000,
+                    timeline: 10,
+                    details: 'Competitive bidding with 5 qualified contractors',
+                    date: new Date().toISOString(),
+                    riskScore: 25,
+                    riskLevel: 'low',
+                    riskFactors: [
+                        'Standard cost structure',
+                        'Multiple bidders',
+                        'Clear documentation'
+                    ],
+                    recommendations: [
+                        'Continue standard oversight',
+                        'Monitor contractor performance'
+                    ]
+                }
+            ];
+            saveProjects();
+        }
+
+        // Save projects to localStorage
+        function saveProjects() {
+            localStorage.setItem('govwatch-projects', JSON.stringify(state.projects));
+        }
+
+        // Render the dashboard view
+        function renderDashboard() {
+            state.currentView = 'dashboard';
+            appContent.innerHTML = `
+                <div class="tabs">
+                    <div class="tab active" onclick="showTab('analyze')">Analyze Project</div>
+                    <div class="tab" onclick="showTab('recent')">Recent Analyses</div>
+                </div>
+                
+                <div id="analyze-tab" class="tab-content active">
+                    <div class="app-section">
+                        <h2>Analyze New Project</h2>
+                        <form id="project-form" onsubmit="analyzeProject(event)">
+                            <div class="form-group">
+                                <label for="project-name">Project Name</label>
+                                <input type="text" id="project-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="project-budget">Budget ($)</label>
+                                <input type="number" id="project-budget" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="project-timeline">Timeline (months)</label>
+                                <input type="number" id="project-timeline" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="project-details">Project Details</label>
+                                <textarea id="project-details" required></textarea>
+                            </div>
+                            <button type="submit" class="btn">Start Analysis</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div id="recent-tab" class="tab-content">
+                    <div class="app-section">
+                        <h2>Recent Risk Assessments</h2>
+                        <div id="projects-list">
+                            ${renderProjectsList()}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render projects list
+        function renderProjectsList() {
+            return state.projects.map(project => `
+                <div class="risk-card ${project.riskLevel}-risk" onclick="viewProject('${project.id}')">
+                    <div class="risk-header">
+                        <h3>${project.name}</h3>
+                        <span class="risk-badge badge-${project.riskLevel}">
+                            ${project.riskLevel.charAt(0).toUpperCase() + project.riskLevel.slice(1)} Risk
+                        </span>
+                    </div>
+                    <div class="risk-meta">
+                        <span>Budget: $${project.budget.toLocaleString()}</span>
+                        <span>Timeline: ${project.timeline} months</span>
+                    </div>
+                    <div class="risk-factors">
+                        <p>${project.riskFactors.slice(0, 2).join(' • ')}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Show tab content
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(`${tabId}-tab`).classList.add('active');
+        }
+
+        // Analyze a new project
+        function analyzeProject(event) {
+            event.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('project-name').value;
+            const budget = parseFloat(document.getElementById('project-budget').value);
+            const timeline = parseInt(document.getElementById('project-timeline').value);
+            const details = document.getElementById('project-details').value;
+            
+            // Simple risk analysis
+            let riskScore = 0;
+            const riskFactors = [];
+            const recommendations = [];
+            
+            // Budget analysis
+            const budgetPerMonth = budget / timeline;
+            if (budgetPerMonth > 1000000) {
+                riskScore += 40;
+                riskFactors.push(`High monthly budget ($${(budgetPerMonth/1000000).toFixed(1)}M/month)`);
+                recommendations.push("Review budget allocation with independent experts");
+            }
+            
+            // Timeline analysis
+            if (timeline < 6) {
+                riskScore += 30;
+                riskFactors.push(`Aggressive timeline (${timeline} months)`);
+                recommendations.push("Consider more realistic timeline");
+            }
+            
+            // Text analysis
+            const detailsLower = details.toLowerCase();
+            if (!detailsLower.includes('competitive') || !detailsLower.includes('bidding')) {
+                riskScore += 20;
+                riskFactors.push("No mention of competitive bidding");
+                recommendations.push("Implement transparent bidding process");
+            }
+            
+            if (detailsLower.includes('single source') || detailsLower.includes('sole provider')) {
+                riskScore += 35;
+                riskFactors.push("Single-source procurement mentioned");
+                recommendations.push("Require justification for single-source procurement");
+            }
+            
+            // Cap score at 100
+            riskScore = Math.min(100, riskScore);
+            
+            // Determine risk level
+            let riskLevel = 'low';
+            if (riskScore >= 70) riskLevel = 'high';
+            else if (riskScore >= 40) riskLevel = 'medium';
+            
+            // Create project
+            const project = {
+                id: 'project-' + Date.now(),
+                name,
+                budget,
+                timeline,
+                details,
+                date: new Date().toISOString(),
+                riskScore,
+                riskLevel,
+                riskFactors,
+                recommendations
+            };
+            
+            // Add to projects
+            state.projects.unshift(project);
+            saveProjects();
+            
+            // View the analysis
+            viewProject(project.id);
+        }
+
+        // View project analysis
+        function viewProject(projectId) {
+            state.currentProject = state.projects.find(p => p.id === projectId);
+            state.currentView = 'analysis';
+            
+            appContent.innerHTML = `
+                <a href="#" class="back-link" onclick="renderDashboard()">← Back to Dashboard</a>
+                <div class="app-section">
+                    <div class="risk-header">
+                        <h2>${state.currentProject.name}</h2>
+                        <span class="risk-badge badge-${state.currentProject.riskLevel}">
+                            ${state.currentProject.riskLevel.charAt(0).toUpperCase() + state.currentProject.riskLevel.slice(1)} Risk
+                        </span>
+                    </div>
+                    
+                    <div class="risk-meta">
+                        <span><strong>Budget:</strong> $${state.currentProject.budget.toLocaleString()}</span>
+                        <span><strong>Timeline:</strong> ${state.currentProject.timeline} months</span>
+                        <span><strong>Date:</strong> ${new Date(state.currentProject.date).toLocaleDateString()}</span>
+                    </div>
+                    
+                    <div class="risk-meter">
+                        <div class="meter-fill" style="width: ${state.currentProject.riskScore}%; 
+                            background-color: ${getRiskColor(state.currentProject.riskLevel)};"></div>
+                    </div>
+                    <div class="meter-labels">
+                        <span>Low</span>
+                        <span>Medium</span>
+                        <span>High</span>
+                    </div>
+                    
+                    <h3>Risk Factors</h3>
+                    <ul style="margin: 15px 0 15px 20px;">
+                        ${state.currentProject.riskFactors.map(factor => `<li>${factor}</li>`).join('')}
+                    </ul>
+                    
+                    <h3>Recommendations</h3>
+                    <ol style="margin: 15px 0 15px 20px;">
+                        ${state.currentProject.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                    </ol>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button class="btn" onclick="exportReport()">Export Report</button>
+                        <button class="btn-secondary" onclick="flagForAudit()">Flag for Audit</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Get color for risk level
+        function getRiskColor(level) {
+            return {
+                high: '#e74c3c',
+                medium: '#f39c12',
+                low: '#2ecc71'
+            }[level];
+        }
+
+        // Export report
+        function exportReport() {
+            if (!state.currentProject) return;
+            
+            // In a real app, this would generate a PDF
+            // Here we'll simulate with a text blob download
+            const reportText = `
+                GovWatch AI - Project Risk Assessment Report
+                ==========================================
+                
+                Project Name: ${state.currentProject.name}
+                Budget: $${state.currentProject.budget.toLocaleString()}
+                Timeline: ${state.currentProject.timeline} months
+                Assessment Date: ${new Date(state.currentProject.date).toLocaleDateString()}
+                
+                Risk Level: ${state.currentProject.riskLevel.toUpperCase()}
+                Risk Score: ${state.currentProject.riskScore}/100
+                
+                Risk Factors Identified:
+                ${state.currentProject.riskFactors.map((f, i) => `${i+1}. ${f}`).join('\n')}
+                
+                Recommendations:
+                ${state.currentProject.recommendations.map((r, i) => `${i+1}. ${r}`).join('\n')}
+            `;
+            
+            const blob = new Blob([reportText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `GovWatch_Report_${state.currentProject.name.replace(/ /g, '_')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('Report exported successfully!');
+        }
+
+        // Flag for audit
+        function flagForAudit() {
+            if (!state.currentProject) return;
+            
+            // In a real app, this would notify authorities
+            alert(`Project "${state.currentProject.name}" has been flagged for audit.\nThis would notify oversight authorities in production.`);
+            
+            // Change button state
+            const btn = document.querySelector('.btn-secondary');
+            if (btn) {
+                btn.textContent = '✓ Flagged for Audit';
+                btn.style.backgroundColor = '#27ae60';
+                btn.style.borderColor = '#27ae60';
+                btn.onclick = null;
+            }
+        }
+
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India Justice Access Heatmap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .heatmap-legend {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .legend-color {
+            width: 2rem;
+            height: 1rem;
+            border-radius: 0.25rem;
+        }
+        #justice-access-heatmap {
+            width: 100%;
+            height: 400px; /* Adjust as needed */
+            background-color: #f7fafc; /* Light background for the heatmap */
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body class="bg-purple-50"> <div class="container mx-auto p-4">
+        <h1 class="text-2xl font-semibold text-purple-700 mb-6 text-center">India Justice Access Heatmap</h1> <div class="card">
+            <h2 class="text-xl font-semibold text-purple-600 mb-4">Understanding the Heatmap</h2> <p class="text-gray-700 mb-4">
+                This heatmap visualizes the state-wise access to justice in India.  Darker shades of purple indicate areas with lower access, while lighter shades indicate better access.  The index is a composite of several factors, including:
+            </p>
+            <ul class="list-disc list-inside text-gray-700 mb-4">
+                <li>Number of pending court cases</li>
+                <li>Police effectiveness</li>
+                <li>Legal aid awareness and availability</li>
+                <li>Court infrastructure</li>
+            </ul>
+            <div class="heatmap-legend">
+                <span class="text-gray-700 font-medium">Access to Justice:</span>
+                <div class="legend-color" style="background-color: #9333ea;"></div> <span class="text-gray-700">Very Low</span>
+                <div class="legend-color" style="background-color: #a78bfa;"></div> <span class="text-gray-700">Low</span>
+                <div class="legend-color" style="background-color: #d8b4fe;"></div> <span class="text-gray-700">Medium</span>
+                <div class="legend-color" style="background-color: #f0abfc;"></div> <span class="text-gray-700">High</span>
+                <div class="legend-color" style="background-color: #fde6ff;"></div> <span class="text-gray-700">Very High</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <canvas id="justice-access-heatmap"></canvas>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="card">
+                <h2 class="text-xl font-semibold text-purple-600 mb-4">Recommendations</h2> <ul class="list-disc list-inside space-y-2 text-gray-700">
+                    <li><span class="font-semibold">Increase Legal Aid Awareness:</span>  Conduct campaigns to educate citizens about their right to free legal aid.</li>
+                    <li><span class="font-semibold">Fast-Track Pending Cases:</span> Implement special courts and fast-track mechanisms for old cases.</li>
+                    <li><span class="font-semibold">Improve Police Infrastructure:</span> Modernize police stations and provide better training to personnel.</li>
+                    <li><span class="font-semibold">Strengthen Court Infrastructure:</span> Invest in modernizing court buildings and technology.</li>
+                    <li><span class="font-semibold">Promote Alternative Dispute Resolution:</span> Encourage mediation and arbitration to reduce the burden on courts.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h2 class="text-xl font-semibold text-purple-600 mb-4">Insights</h2> <ul class="list-disc list-inside space-y-2 text-gray-700">
+                    <li>States with high pendency rates often correlate with lower access to justice.</li>
+                    <li>Effective policing is crucial for citizens to feel safe and access justice.</li>
+                    <li>Lack of awareness about legal aid prevents many from seeking help.</li>
+                    <li>Modernizing the judiciary is essential for timely justice delivery.</li>
+                    <li>Alternative dispute resolution can provide quicker and more affordable solutions.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('justice-access-heatmap').getContext('2d');
+        const data = {
+            labels: [
+                'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand',
+                'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab',
+                'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'
+            ],
+            datasets: [{
+                label: 'Access to Justice Index',
+                data: [
+                    65, 45, 55, 30, 40, 80, 70, 60, 75, 35,
+                    70, 85, 40, 75, 50, 60, 65, 55, 45, 65,
+                    50, 80, 75, 70, 60, 25, 65, 50
+                ],
+                backgroundColor: [
+                    '#a78bfa', '#d8b4fe', '#a78bfa', '#9333ea', '#a78bfa', '#fde6ff', '#f0abfc', '#d8b4fe', '#f0abfc', '#9333ea',
+                    '#f0abfc', '#fde6ff', '#a78bfa', '#f0abfc', '#d8b4fe', '#d8b4fe', '#a78bfa', '#a78bfa', '#a78bfa', '#f0abfc',
+                    '#a78bfa', '#fde6ff', '#f0abfc', '#f0abfc', '#d8b4fe', '#9333ea', '#d8b4fe', '#a78bfa'
+                ],
+                borderColor: [],
+                borderWidth: 0
+            }]
+        };
+
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Inter'
+                            },
+                            color: '#6b7280'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#f0abfc',
+                        titleColor: '#5b21b6',
+                        bodyColor: '#6b7280',
+                        borderColor: '#8b5cf6',
+                        borderWidth: 1,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y;
+                                }
+                                return label;
+                            }
+                        },
+                        titleFont: {
+                            family: 'Inter',
+                            weight: 'bold'
+                        },
+                        bodyFont: {
+                            family: 'Inter'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            font: {
+                                family: 'Inter',
+                                size: 12
+                            },
+                            color: '#6b7280'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            font: {
+                                family: 'Inter',
+                                size: 12
+                            },
+                            color: '#6b7280'
+                        },
+                        grid: {
+                            color: '#e0e0e0'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,379 @@
+/* --- Global Styles & Variables --- */
+:root {
+    --primary-color: #6a11cb; /* Richer Purple */
+    --secondary-color: #2575fc; /* Vibrant Blue/Purple */
+    --heading-color: #1a1a2e; /* Dark Navy/Black */
+    --text-color: #555; /* Standard text grey */
+    --light-gray: #f8f9fa;
+    --white-color: #ffffff;
+    --border-color: #e0e0e0;
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-medium: rgba(0, 0, 0, 0.12);
+
+    --font-primary: 'Poppins', sans-serif;
+    --border-radius: 12px; /* Softer corners */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth; /* Smooth scroll for anchors like #features */
+    scroll-padding-top: 80px; /* Offset for fixed header */
+}
+
+body {
+    font-family: var(--font-primary);
+    line-height: 1.7;
+    color: var(--text-color);
+    background-color: var(--white-color); /* Keep body white */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px; /* Side padding */
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--secondary-color);
+}
+
+h1, h2, h3 {
+    color: var(--heading-color);
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+h1 { font-size: 2.8rem; font-weight: 700; }
+h2 { font-size: 2rem; margin-bottom: 2rem; text-align: center;}
+h3 { font-size: 1.3rem; font-weight: 600; }
+
+p {
+    margin-bottom: 1rem;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+ul {
+    list-style: none;
+}
+
+/* --- Header & Navbar --- */
+.site-header {
+    background-color: var(--white-color);
+    box-shadow: 0 2px 10px var(--shadow-light);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+}
+
+.logo i {
+    margin-right: 0.6rem;
+    color: var(--secondary-color); /* Use accent for icon */
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links li {
+    margin-left: 1.5rem; /* Slightly reduced spacing */
+}
+
+.nav-links a {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    padding: 0.5rem 0.2rem;
+    font-weight: 500;
+    position: relative; /* For potential underline effect */
+}
+
+.nav-links a i {
+    margin-right: 0.4rem;
+    font-size: 1rem;
+    color: #aaa; /* Lighter icon color */
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--primary-color);
+}
+
+.nav-links a:hover i,
+.nav-links a.active i {
+    color: var(--primary-color);
+}
+
+/* Optional: Underline effect on hover/active */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+    width: 100%;
+}
+
+.menu-toggle { /* Basic style for mobile toggle */
+    display: none; /* Hidden by default */
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--heading-color);
+    cursor: pointer;
+}
+
+/* --- Hero Section --- */
+.hero {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: var(--white-color);
+    padding: 6rem 0; /* More vertical padding */
+    text-align: center;
+}
+
+.hero-content {
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.hero h1 {
+    color: var(--white-color);
+    margin-bottom: 1.5rem;
+}
+
+.hero p {
+    font-size: 1.15rem;
+    opacity: 0.9;
+    margin-bottom: 0; /* Remove bottom margin if no button */
+    font-weight: 300;
+}
+
+/* Optional Button Style */
+.btn {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    border-radius: 50px; /* Pill shape */
+    font-weight: 600;
+    margin-top: 2rem;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: var(--white-color);
+    color: var(--primary-color);
+    border: 2px solid var(--white-color);
+}
+
+.btn-primary:hover {
+    background-color: transparent;
+    color: var(--white-color);
+}
+
+
+/* --- Features Section --- */
+.features-section {
+    padding: 5rem 0; /* Generous padding */
+    background-color: var(--light-gray); /* Subtle background difference */
+}
+
+.section-title {
+    margin-bottom: 3rem; /* More space below title */
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem; /* Increased gap */
+}
+
+.feature-card {
+    background-color: var(--white-color);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px var(--shadow-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden; /* Ensure link padding doesn't overflow */
+}
+
+.feature-card a {
+    display: flex; /* Use flexbox for content alignment */
+    flex-direction: column; /* Stack content vertically */
+    padding: 2rem 1.8rem;
+    height: 100%;
+    color: var(--text-color); /* Reset link color inside card */
+}
+
+.feature-card:hover {
+    transform: translateY(-8px); /* Slightly more lift */
+    box-shadow: 0 10px 25px var(--shadow-medium);
+}
+
+.card-icon {
+    font-size: 2.5rem; /* Larger icon */
+    color: var(--primary-color);
+    margin-bottom: 1.2rem;
+    text-align: left;
+    width: fit-content; /* Prevent icon taking full width */
+}
+/* Optional: Add a background circle to icons */
+/* .card-icon {
+    background-color: #f0e8ff;
+    color: var(--primary-color);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.2rem;
+    font-size: 1.8rem;
+} */
+
+.feature-card h3 {
+    margin-bottom: 0.6rem;
+    color: var(--heading-color);
+}
+
+.feature-card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 0; /* Remove default paragraph margin */
+    flex-grow: 1; /* Allow paragraph to take remaining space */
+}
+
+/* --- Footer --- */
+.site-footer-bottom {
+    background-color: var(--heading-color);
+    color: #ccc; /* Light grey text */
+    padding: 1.5rem 0;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.site-footer-bottom p {
+    margin-bottom: 0;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 992px) {
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 1.8rem; }
+    .features-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block; /* Show hamburger menu */
+    }
+
+    .nav-links {
+        display: none; /* Hide links by default */
+        flex-direction: column;
+        position: absolute;
+        top: 100%; /* Position below header */
+        left: 0;
+        width: 100%;
+        background-color: var(--white-color);
+        box-shadow: 0 5px 10px var(--shadow-light);
+        padding: 1rem 0;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .nav-links.active {
+        display: flex; /* Show when active */
+    }
+
+    .nav-links li {
+        margin-left: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-links a {
+        padding: 1rem;
+        width: 100%;
+        justify-content: center;
+        border-bottom: 1px solid #eee;
+    }
+     .nav-links li:last-child a {
+        border-bottom: none;
+    }
+    .nav-links a::after { /* Disable underline effect on mobile nav stack */
+        display: none;
+    }
+
+    h1 { font-size: 2.2rem; }
+    .hero { padding: 4rem 0; }
+    .features-section { padding: 4rem 0; }
+    .section-title { margin-bottom: 2rem;}
+    .features-grid {
+         gap: 1.5rem;
+    }
+    .feature-card a {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+     h1 { font-size: 2rem; }
+     .hero p { font-size: 1.05rem; }
+     .features-grid {
+        grid-template-columns: 1fr; /* Stack cards on very small screens */
+    }
+    .feature-card {
+        text-align: center; /* Center text in card */
+    }
+    .feature-card a {
+        align-items: center; /* Center content in link */
+    }
+    .card-icon {
+        margin-left: auto; /* Center icon */
+        margin-right: auto;
+        text-align: center;
+    }
+}

@@ -1,0 +1,256 @@
+/* static/css/style.css */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+header {
+    background-color: #e9ecef; /* Light grey header */
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+header h1 a {
+    color: #495057;
+    text-decoration: none;
+}
+
+main {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: #e9ecef;
+    border-top: 1px solid #dee2e6;
+    font-size: 0.9em;
+    color: #6c757d;
+}
+
+/* Search Form */
+.search-form {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.search-form h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem; /* Spacing between elements in a row */
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    flex: 1; /* Make form groups share space equally */
+    display: flex;
+    flex-direction: column;
+}
+.form-group-full {
+    flex-basis: 100%; /* Make location span full width */
+}
+
+
+.form-group label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.form-group select,
+.form-group input[type="text"] {
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 100%; /* Ensure inputs fill the group */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.form-actions {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.btn-find {
+    background-color: #8a2be2; /* Purple button like screenshot */
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-find:hover {
+    background-color: #7a1cc1; /* Darker purple */
+}
+
+
+/* Results List */
+.results-list {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.professional-card {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+    flex-wrap: wrap; /* Allow wrapping if needed */
+}
+
+.profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover; /* Prevent distortion */
+    border: 1px solid #ddd;
+}
+
+.card-header h3 {
+    margin: 0;
+    flex-grow: 1; /* Allow name to take up space */
+}
+
+.pro-bono-tag {
+    background-color: #d1e7dd; /* Light green */
+    color: #0f5132; /* Dark green */
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: bold;
+    white-space: nowrap; /* Prevent tag from breaking line */
+}
+
+.card-body p {
+    margin: 0.5rem 0;
+    line-height: 1.5;
+    font-size: 0.95em;
+}
+
+.card-body strong {
+    color: #333;
+}
+
+.card-footer {
+    margin-top: auto; /* Push footer to bottom */
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-between; /* Space out buttons */
+    gap: 1rem;
+}
+
+.btn-request, .btn-profile {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-request {
+    background-color: #8a2be2; /* Purple */
+    color: white;
+    border: 1px solid #8a2be2;
+}
+.btn-request:hover {
+    background-color: #7a1cc1;
+}
+
+.btn-profile {
+    background-color: transparent;
+    color: #8a2be2; /* Purple */
+    border: 1px solid #8a2be2;
+}
+.btn-profile:hover {
+    background-color: #f3e8ff; /* Very light purple */
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: #0d6efd;
+    text-decoration: none;
+}
+.back-link:hover {
+    text-decoration: underline;
+}
+
+
+/* Profile Detail */
+.profile-detail {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 1rem;
+}
+
+.profile-pic-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    display: block;
+    margin: 0 auto 1.5rem auto;
+}
+
+.profile-detail h2 {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.profile-detail .pro-bono-tag {
+    display: block; /* Make tag its own line */
+    width: fit-content; /* Only as wide as needed */
+    margin: 0 auto 1.5rem auto; /* Center tag */
+}
+
+.profile-detail p {
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+}
+.profile-detail h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.3rem;
+}
+
+.profile-actions {
+    margin-top: 2rem;
+    text-align: center;
+}

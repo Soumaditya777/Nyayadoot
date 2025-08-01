@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}{{ professional.full_name }} - Profile{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('index') }}" class="back-link">&laquo; Back to Search</a>
+<div class="profile-detail">
+    <img src="{{ url_for('static', filename='images/default_avatar.png') if not professional.profile_picture_url or 'default' in professional.profile_picture_url else professional.profile_picture_url }}" alt="Profile picture for {{ professional.full_name }}" class="profile-pic-large">
+    <h2>{{ professional.full_name }}</h2>
+    {% if professional.pro_bono %}
+        <span class="pro-bono-tag">Pro Bono Available</span>
+    {% endif %}
+
+    <p><strong>Email:</strong> {{ professional.email }}</p> {# Displaying email directly here - consider privacy implications #}
+    <p><strong>Status:</strong>
+        {% if professional.is_student %}
+            Law Student
+        {% else %}
+            Lawyer ({{ professional.years_of_practice if professional.years_of_practice is not none else 'N/A' }} years experience)
+        {% endif %}
+    </p>
+    {% if not professional.is_student and professional.bar_council_id %}
+        <p><strong>Bar Council ID:</strong> {{ professional.bar_council_id }}</p>
+    {% endif %}
+    <p><strong>Location:</strong> {{ professional.location_city }}{% if professional.location_state %}, {{ professional.location_state }}{% endif %}</p>
+    <p><strong>Availability:</strong> {{ professional.availability if professional.availability else 'Not specified' }}</p>
+    <p><strong>Specializes in:</strong> {{ professional.domains | join(', ') }}</p>
+    <p><strong>Languages Spoken:</strong> {{ professional.languages | join(', ') }}</p>
+
+    <h3>Bio</h3>
+    <p>{{ professional.bio if professional.bio else 'No bio provided.' }}</p>
+
+    <div class="profile-actions">
+        <a href="#" class="btn-request">Request Contact</a> {# Placeholder #}
+    </div>
+
+</div>
+<a href="{{ url_for('index') }}" class="back-link">&laquo; Back to Search</a>
+{% endblock %}

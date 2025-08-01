@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NyayaDoot - Empowering Legal Access</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Favicon (Optional) -->
+    <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-balance-scale"></i> <!-- Keep or change icon -->
+                    NyayaDoot
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#"><i class="fas fa-balance-scale-left"></i> LegalEase GPT</a></li>
+                    <li><a href="#"><i class="fas fa-shield-alt"></i> WhistleSafe</a></li>
+                    <!-- Link to the GovWatch application -->
+                    <li><a href="http://127.0.0.1:5500/GOVWATCH/index.html" target="_blank"><i class="fas fa-binoculars"></i> GovWatch</a></li>
+                    <!-- Link to the Justice Map application -->
+                    <li><a href="http://127.0.0.1:5500/justice%20heatmap%204%20stats/index.html" target="_blank"><i class="fas fa-map-marked-alt"></i> Justice Map</a></li>
+                    <!-- Link to the Lawyer Connect application -->
+                    <li><a href="http://127.0.0.1:5001/" target="_blank"><i class="fas fa-users"></i> Connect</a></li>
+                </ul>
+                <!-- Mobile Menu Toggle (Optional but recommended) -->
+                <button class="menu-toggle" aria-label="Toggle Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Welcome to NyayaDoot AI Hub</h1>
+                    <p>Your gateway to accessible legal resources, transparency tools, and citizen empowerment.</p>
+                    <!-- Optional Button -->
+                    <!-- <a href="#features" class="btn btn-primary">Explore Features</a> -->
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features-section">
+            <div class="container">
+                <h2 class="section-title">Our Services</h2>
+                <div class="features-grid">
+
+                    <div class="feature-card">
+                        <a href="#"> <!-- Link for this feature -->
+                            <div class="card-icon"><i class="fas fa-gavel"></i></div>
+                            <h3>LegalEase GPT</h3>
+                            <p>Your personal AI assistant simplifying legal rights and procedures.</p>
+                        </a>
+                    </div>
+
+                    <div class="feature-card">
+                        <a href="#"> <!-- Link for this feature -->
+                            <div class="card-icon"><i class="fas fa-shield-virus"></i></div>
+                            <h3>WhistleSafe</h3>
+                            <p>Report corruption and injustice anonymously and securely.</p>
+                        </a>
+                    </div>
+
+                    <div class="feature-card">
+                         <!-- Link to the GovWatch application -->
+                         <a href="http://127.0.0.1:5500/GOVWATCH/index.html" target="_blank">
+                            <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                            <h3>GovWatch AI</h3>
+                            <p>AI-powered corruption risk analysis for public projects.</p>
+                        </a>
+                    </div>
+
+                    <div class="feature-card">
+                         <!-- Link to the Justice Map application -->
+                         <a href="http://127.0.0.1:5500/justice%20heatmap%204%20stats/index.html" target="_blank">
+                             <div class="card-icon"><i class="fas fa-map-location-dot"></i></div>
+                            <h3>Justice Access Heatmap</h3>
+                            <p>Visualize areas with limited access to essential legal resources.</p>
+                        </a>
+                    </div>
+
+                    <div class="feature-card">
+                         <!-- Link to the Lawyer Connect application -->
+                         <a href="http://127.0.0.1:5001/" target="_blank">
+                            <div class="card-icon"><i class="fas fa-handshake-angle"></i></div>
+                            <h3>Lawyer-Client Connect</h3>
+                            <p>Find and connect with verified legal professionals and students.</p>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer-bottom">
+        <div class="container">
+            <p>© 2024 NyayaDoot. All Rights Reserved.</p>
+            <!-- Add social links or other footer info if needed -->
+        </div>
+    </footer>
+
+    <!-- Simple script for mobile menu toggle (Optional) -->
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }
+    </script>
+
+</body>
+</html>

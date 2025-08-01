@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhistleSafe - Anonymous Reporting</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>WhistleSafe</h1>
+            <p class="tagline">Anonymously report corruption or injustice with our secure platform.</p>
+        </header>
+
+        <div class="intro-text">
+            <p>Fear of retaliation should never silence justice. Like the schoolteacher unable to report siphoned funds, many face similar dilemmas. WhistleSafe provides a secure and anonymous channel. Your report is encrypted, analyzed for credibility (using AI pattern detection to help filter noise), and forwarded to appropriate authorities like Lokpal or relevant anti-corruption bodies when deemed credible. Your identity is protected throughout the process.</p>
+            
+            <div class="privacy-notice">
+                <strong>Your report is submitted anonymously. We do not track your IP address or personal data.</strong>
+            </div>
+        </div>
+
+        <form id="reportForm" class="report-form">
+            <div class="form-section">
+                <h2>Report Incident</h2>
+                
+                <div class="form-group">
+                    <label for="category">Category of Incident:</label>
+                    <select id="category" name="category" required>
+                        <option value="">– Select a Category –</option>
+                        <option value="financial">Financial Irregularity / Fund Misuse</option>
+                        <option value="harassment">Harassment or Discrimination</option>
+                        <option value="safety">Safety Violation</option>
+                        <option value="academic">Academic Fraud</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location (Optional):</label>
+                    <input type="text" id="location" name="location" placeholder="e.g., City, District, Department Name (Be specific but cautious)">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Detailed Description:</label>
+                    <textarea id="description" name="description" rows="8" required placeholder="Describe the incident in detail. Include date, times, people involved (use positions/roles if possible, avoid names) and what you observed. Please do not include information that could identify you."></textarea>
+                    <div id="credibilityIndicator" class="credibility-indicator hidden">
+                        <span class="credibility-label">Credibility Score:</span>
+                        <div class="credibility-bar">
+                            <div class="credibility-fill" style="width: 0%"></div>
+                        </div>
+                        <span class="credibility-percentage">0%</span>
+                    </div>
+                    <div id="duplicateWarning" class="warning-message hidden">
+                        ⚠️ Similar reports have been submitted before. Your report will still be processed.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Evidence (Optional):</label>
+                    <div class="file-upload">
+                        <input type="file" id="evidence" name="evidence" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.mp3,.mp4,.mov">
+                        <label for="evidence" class="file-upload-label">
+                            <span id="fileName">Choose file</span>
+                            <span class="file-upload-button">Browse</span>
+                        </label>
+                        <div class="file-requirements">
+                            Accepted formats: PDF, DOC(X), JPG, PNG, MP3, MP4, MOV. Max size: 10MB.
+                            <br>Please remove metadata from files if possible before uploading.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="submit-button">Submit Report Anonymously</button>
+            </div>
+        </form>
+
+        <div id="statusModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Analyzing Report</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="loader">
+                        <div class="spinner"></div>
+                        <p>Processing your report with AI analysis...</p>
+                        <div class="progress-container">
+                            <div class="progress-bar" id="analysisProgress"></div>
+                        </div>
+                    </div>
+                    <div id="analysisDetails" class="analysis-details hidden">
+                        <h4>Analysis Results:</h4>
+                        <ul id="analysisResults"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/storage.js"></script>
+    <script src="scripts/nlp-processor.js"></script>
+    <script src="scripts/main.js"></script>
+</body>
+</html>

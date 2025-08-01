@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justice Access Heatmap</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Justice Access Heatmap</h1>
+        <p>Explore areas with limited access to legal resources</p>
+    </header>
+
+    <main>
+        <div class="legend">
+            <div class="legend-item">
+                <span class="color-box low"></span>
+                <span>Low Access</span>
+            </div>
+            <div class="legend-item">
+                <span class="color-box medium"></span>
+                <span>Medium Access</span>
+            </div>
+            <div class="legend-item">
+                <span class="color-box high"></span>
+                <span>High Access</span>
+            </div>
+        </div>
+
+        <div class="heatmap-container">
+            <div class="region north low" data-lawyers="12">
+                <h3>North Region</h3>
+                <p>12 lawyers per 100k</p>
+            </div>
+            <div class="region south medium" data-lawyers="35">
+                <h3>South Region</h3>
+                <p>35 lawyers per 100k</p>
+            </div>
+            <div class="region east high" data-lawyers="78">
+                <h3>East Region</h3>
+                <p>78 lawyers per 100k</p>
+            </div>
+            <div class="region west low" data-lawyers="18">
+                <h3>West Region</h3>
+                <p>18 lawyers per 100k</p>
+            </div>
+            <div class="region central medium" data-lawyers="42">
+                <h3>Central Region</h3>
+                <p>42 lawyers per 100k</p>
+            </div>
+        </div>
+
+        <div class="recommendations">
+            <h2>Recommendations</h2>
+            <ul>
+                <li>Deploy mobile legal clinics in North and West regions</li>
+                <li>Conduct awareness drives in areas with low access</li>
+                <li>Increase number of legal aid centers in underserved areas</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <p>Justice access data has been visualized.</p>
+        <p class="timestamp">Map loaded on <span id="current-date"></span></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

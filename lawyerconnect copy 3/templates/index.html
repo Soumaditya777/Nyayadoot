@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Find Legal Help{% endblock %}
+
+{% block content %}
+<h2>Find Verified Legal Professionals and Law Students</h2>
+
+<form action="{{ url_for('search') }}" method="post" class="search-form">
+    <div class="form-row">
+        <div class="form-group">
+            <label for="legal_domain">Legal Domain</label>
+            <select name="legal_domain" id="legal_domain">
+                <option value="">Any Domain</option>
+                {% for domain in domains %}
+                <option value="{{ domain.name }}">{{ domain.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="language">Language</label>
+            <select name="language" id="language">
+                <option value="">Any Language</option>
+                {% for lang in languages %}
+                <option value="{{ lang.name }}">{{ lang.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="experience">Experience</label>
+            <select name="experience" id="experience">
+                <option value="">Any Experience</option>
+                {% for level in experience_levels %}
+                <option value="{{ level }}">{{ level }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="availability">Availability</label>
+            <select name="availability" id="availability">
+                <option value="">Any Time</option> {% for option in availability_options %}
+                <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+         <div class="form-group form-group-full">
+             <label for="location">Location (City)</label>
+             <input type="text" name="location" id="location" placeholder="e.g., Delhi, Mumbai">
+         </div>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn-find">Find Legal Help</button>
+    </div>
+</form>
+{% endblock %}
